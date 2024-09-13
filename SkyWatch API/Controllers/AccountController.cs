@@ -29,11 +29,15 @@ namespace SkyWatch_API.Controllers
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
                 return Unauthorized();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
             return new UserDto
             {
                 Id = user.Id,
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user),
+                Roles = roles.ToList()
             };
         }
 

@@ -11,6 +11,8 @@ namespace SkyWatch_API.Data
             {
                 var user = new User
                 {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = "bob@test.com",
                     Email = "bob@test.com"
                 };
 
@@ -19,6 +21,8 @@ namespace SkyWatch_API.Data
 
                 var admin = new User
                 {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = "admin@test.com",
                     Email = "admin@test.com"
                 };
 
@@ -27,6 +31,8 @@ namespace SkyWatch_API.Data
 
                 var tech = new User
                 {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = "tech@test.com",
                     Email = "tech@test.com"
                 };
 

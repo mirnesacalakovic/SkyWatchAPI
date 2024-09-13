@@ -49,7 +49,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<SkyContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    // opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL"));
 });
 
 builder.Services.AddCors(opt =>
@@ -78,9 +79,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
 }); 
 builder.Services.AddAuthorization();
-builder.Services.AddScoped<TokenService>();   
+builder.Services.AddScoped<TokenService>();
 
-
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+builder.WebHost.UseUrls($"http://*:{port}");
 
 var app = builder.Build();
 
@@ -97,7 +99,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("policy");
-app.UseAuthentication(); //prvo autentikacija
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseDefaultFiles();
@@ -105,8 +107,6 @@ app.UseStaticFiles();
 
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback");
-
-
 
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<SkyContext>();

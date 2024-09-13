@@ -58,11 +58,6 @@ namespace SkyWatch_API.Controllers
                 .Where(a => a.UserId == userId)
                 .ToListAsync();
 
-            if (!alarms.Any())
-            {
-                return NotFound("No alarms found for this user.");
-            }
-
             return Ok(alarms);
         }
 
